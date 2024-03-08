@@ -73,5 +73,5 @@ GET_ALL_FIGHTERS_RANKED = """Select players.name, fighters.name, elos.value FROM
     INNER JOIN fighters ON fighters.id = elos.fighter_id
     ORDER BY elos.value Desc"""
 
-GET_PLAYER_NAMES = """Select name from players"""
-GET_FIGHTER_NAMES = """Select name from fighters"""
+GET_PLAYER_NAMES = """Select name from players Order by name"""
+GET_FIGHTER_NAMES = """Select name from fighters Order by name """
