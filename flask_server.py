@@ -85,7 +85,3 @@ def games():
         return render_template("games.html", games=games)
     except sqlite3.Error:
         return render_template("fighter_ranking.html", fighters=[])
-
-
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
