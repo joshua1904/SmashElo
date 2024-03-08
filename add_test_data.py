@@ -24,18 +24,22 @@ games_data = [
     (3, 1, 3, 1, 3, 2)   # Player 3 with Fighter 3 wins against Player 1 with Fighter 1
 ]
 
-# Insert sample players
-for player in players_data:
-    insert_player(player[0], player[1])
+fighters = [
+    "Mario", "Donkey Kong", "Link", "Samus", "Dark Samus", "Yoshi", "Kirby", "Fox",
+    "Pikachu", "Luigi", "Ness", "Captain Falcon", "Jigglypuff", "Peach", "Daisy",
+    "Bowser", "Ice Climbers", "Sheik", "Zelda", "Dr. Mario", "Pichu", "Falco",
+    "Marth", "Lucina", "Young Link", "Ganondorf", "Mewtwo", "Roy", "Chrom", "Mr. Game & Watch",
+    "Meta Knight", "Pit", "Dark Pit", "Zero Suit Samus", "Wario", "Snake", "Ike",
+    "Squirtle", "Ivysaur", "Charizard", "Diddy Kong", "Lucas", "Sonic", "King Dedede",
+    "Olimar", "Lucario", "R.O.B.", "Toon Link", "Wolf", "Villager", "Mega Man",
+    "Wii Fit Trainer", "Rosalina & Luma", "Little Mac", "Greninja", "Mii Brawler",
+    "Mii Swordfighter", "Mii Gunner", "Palutena", "Pac-Man", "Robin", "Shulk",
+    "Bowser Jr.", "Duck Hunt", "Ryu", "Ken", "Cloud", "Corrin", "Bayonetta",
+    "Inkling", "Ridley", "Simon", "Richter", "King K. Rool", "Isabelle", "Incineroar",
+    "Piranha Plant", "Joker", "Hero", "Banjo & Kazooie", "Terry", "Byleth", "Min Min",
+    "Steve", "Sephiroth", "Pyra", "Mythra", "Kazuya", "Sora"
+]
 
-# Insert sample fighters
-for fighter in fighters_data:
-    insert_fighter(fighter[0])
-
-# Insert sample ELOs
-for elo in elos_data:
-    insert_elo(elo[0], elo[1], elo[2])
-
-# Insert sample games
-for game in games_data:
-    insert_game(game[0], game[1], game[2], game[3], game[4], game[5])
+# Insert all fighters into the database
+for fighter in fighters:
+    insert_fighter(fighter)
