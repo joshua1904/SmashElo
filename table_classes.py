@@ -3,13 +3,11 @@ import dataclasses
 
 @dataclasses.dataclass
 class Player:
-    id: int
     name: str
     elo: int
 
 @dataclasses.dataclass
 class Fighter:
-    id: int
     name: str
     elo: int
 
@@ -17,8 +15,8 @@ class Fighter:
 class Elo:
     id: int
     value: int
-    fighter_id: int
-    player_id: int
+    fighter_name: str
+    player_name: str
 
 
 @dataclasses.dataclass

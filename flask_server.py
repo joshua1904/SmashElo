@@ -71,6 +71,7 @@ def add_player():
             flash("Player Name cant be empty", "error")
             return render_template("add.html", fighters=fighters, players=players)
         insert_player(player, START_ELO)
+        players.append(player)
         flash("Successfully added Player", "success")
         return render_template("add.html", fighters=fighters, players=players)
     except sqlite3.Error:
@@ -85,3 +86,7 @@ def games():
         return render_template("games.html", games=games)
     except sqlite3.Error:
         return render_template("fighter_ranking.html", fighters=[])
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

@@ -23,8 +23,8 @@ def _add_fighter_elo(player: Player, fighter_name: str) -> Fighter | None:
     If the fighter dosent exist -> return None"""
     if not (fighter := get_fighter_by_name(fighter_name)):
         return None
-    insert_elo(START_ELO, fighter[0], player.id)
-    return _get_fighter_data(get_data_of_player_fighter(player.name, fighter[1]))
+    insert_elo(START_ELO, fighter[0], player.name)
+    return _get_fighter_data(get_data_of_player_fighter(player.name, fighter[0]))
 
 
 def add_game(winner_name: str, winner_fighter_name: str, loser_name: str, loser_fighter_name: str, winner_stock: int,
@@ -47,11 +47,11 @@ def add_game(winner_name: str, winner_fighter_name: str, loser_name: str, loser_
     new_loser_fighter_elo = update_ratings(loser_fighter.elo, winner_fighter.elo, False)
     # insert new elos and game in database
     try:
-        insert_game(winner_player.id, loser_player.id, winner_fighter.id, loser_fighter.id, winner_stock, loser_stock)
+        insert_game(winner_player.name, loser_player.name, winner_fighter.name, loser_fighter.name, winner_stock, loser_stock)
         update_elo_of_player(winner_name, new_winner_elo)
         update_elo_of_player(loser_name, new_loser_elo)
-        update_elo_of_player_fighter(winner_fighter.id, winner_player.id, new_winner_fighter_elo)
-        update_elo_of_player_fighter(loser_fighter.id, loser_player.id, new_loser_fighter_elo)
+        update_elo_of_player_fighter(winner_fighter.name, winner_player.name, new_winner_fighter_elo)
+        update_elo_of_player_fighter(loser_fighter.name, loser_player.name, new_loser_fighter_elo)
     except sqlite3.Error:
         return False
     return True
@@ -71,6 +71,6 @@ def _no_arguments_are_none(*args):
 
 
 if __name__ == "__main__":
-    # print(add_game("Marcel", "K K Rool", "Joshua", "Bowser",3, 2))
+    print(add_game("Heiko", "Bowser", "Joshua", "Bowser",3, 2))
     # print(get_ranked_fighters())
     print(get_games())
