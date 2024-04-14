@@ -48,6 +48,8 @@ DELETE_GAME = "DELETE FROM games WHERE id = ?"
 
 GET_ALL_GAMES_STATEMENT = """Select winner_player_name as winner, loser_player_name as loser, winner_fighter_name as winners_fighter, loser_fighter_name as losers_fighter, winner_stocks, loser_stocks from games
 	ORDER BY games.id DESC"""
+GET_LAST_GAME_STATEMENT = """Select winner_player_name as winner, loser_player_name as loser, winner_fighter_name as winners_fighter, loser_fighter_name as losers_fighter, winner_stocks, loser_stocks from games
+	ORDER BY games.id DESC LIMIT 1"""
 
 GET_ALL_PLAYERS_RANKED = """select * from players ORDER BY elo DESC;"""
 
@@ -64,3 +66,5 @@ GET_ALL_FIGHTERS_RANKED = """Select player_name, fighter_name, value FROM elos
 
 GET_PLAYER_NAMES = """Select name from players Order by name"""
 GET_FIGHTER_NAMES = """Select name from fighters Order by name """
+
+DELETE_LAST_GAME_STATEMENT = """Delete from games where id in (Select MAX(id) from games)"""

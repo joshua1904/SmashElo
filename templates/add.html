@@ -6,6 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Game</title>
     <style>
+        table {
+
+            width: 72%;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+        th {
+            background-color: #555;
+        }
+        tr:hover {
+            background-color: #555;
+        }
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+        }
         body {
             background-color: #222;
             color: #fff;
@@ -145,6 +166,28 @@
             </div>
             <div class="form-group">
                 <button type="submit">Add Player</button>
+            </div>
+        </form>
+        <h1>Delete Last Game</h1>
+        <table>
+            <tr>
+                <th>Winner</th>
+                <th>Winner Character</th>
+                <th>Loser</th>
+                <th>Loser Character</th>
+                <th>Result</th>
+            </tr>
+            <tr>
+                <td>{{ game.winner }}</td>
+                <td>{{ game.winner_fighter }}</td>
+                <td>{{ game.loser }}</td>
+                <td>{{ game.loser_fighter }}</td>
+                <td>{{ game.winner_kills }}:{{ game.loser_kills }}</td>
+            </tr>
+        </table>
+        <form action="/delete_last_game" method="post">
+            <div class="form-group">
+                <button type="submit">Delete Last Game</button>
             </div>
         </form>
     </div>

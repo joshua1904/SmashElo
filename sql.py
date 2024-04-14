@@ -146,10 +146,10 @@ def update_elo_of_player(player_name: str, elo: int):
         conn.commit()
 
 
-def update_elo_of_player_fighter(fighter_id: int, player_id: int, elo: int):
+def update_elo_of_player_fighter(fighter_name: str, player_name: str, elo: int):
     with sqlite3.connect(DATABASE_FILE) as conn:
         cursor = conn.cursor()
-        cursor.execute(UPDATE_ELO_OF_PLAYER_FIGHTER, (elo, player_id, fighter_id))
+        cursor.execute(UPDATE_ELO_OF_PLAYER_FIGHTER, (elo, player_name, fighter_name))
         conn.commit()
 
 
@@ -187,3 +187,15 @@ def get_games():
     with sqlite3.connect(DATABASE_FILE) as conn:
         cursor = conn.cursor()
         return cursor.execute(GET_ALL_GAMES_STATEMENT).fetchall()
+
+
+def get_last_game():
+    with sqlite3.connect(DATABASE_FILE) as conn:
+        cursor = conn.cursor()
+        return cursor.execute(GET_LAST_GAME_STATEMENT).fetchone()
+
+def delete_last_game():
+    with sqlite3.connect(DATABASE_FILE) as conn:
+        cursor = conn.cursor()
+        cursor.execute(DELETE_LAST_GAME_STATEMENT)
+        conn.commit()

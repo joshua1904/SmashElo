@@ -1,10 +1,12 @@
 import sqlite3
 
+import calculate_elo
 from sql import *
 from table_classes import *
 from calculate_elo import update_ratings
 
 START_ELO = 1500
+
 
 def _get_player_data(player_data: tuple | None) -> Player | None:
     if player_data is not None:
@@ -47,7 +49,8 @@ def add_game(winner_name: str, winner_fighter_name: str, loser_name: str, loser_
     new_loser_fighter_elo = update_ratings(loser_fighter.elo, winner_fighter.elo, False)
     # insert new elos and game in database
     try:
-        insert_game(winner_player.name, loser_player.name, winner_fighter.name, loser_fighter.name, winner_stock, loser_stock)
+        insert_game(winner_player.name, loser_player.name, winner_fighter.name, loser_fighter.name, winner_stock,
+                    loser_stock)
         update_elo_of_player(winner_name, new_winner_elo)
         update_elo_of_player(loser_name, new_loser_elo)
         update_elo_of_player_fighter(winner_fighter.name, winner_player.name, new_winner_fighter_elo)
@@ -56,21 +59,44 @@ def add_game(winner_name: str, winner_fighter_name: str, loser_name: str, loser_
         return False
     return True
 
+
 def get_ranked_players() -> list[dict]:
     return [dataclasses.asdict(Player(*i)) for i in get_all_elos_of_players()]
+
 
 def get_ranked_fighters() -> list[dict]:
     return [dataclasses.asdict(EloOfPlayerFighter(*i)) for i in get_all_elos_of_fighters()]
 
+
 def get_all_games() -> list[dict]:
     return [dataclasses.asdict(Games(*i)) for i in get_games()]
 
+def get_last_game_as_game() -> Games:
+    game = get_last_game()
+    if game:
+        game = Games(*game)
+    return game
 
 def _no_arguments_are_none(*args):
     return None not in args
 
 
-if __name__ == "__main__":
-    print(add_game("Heiko", "Bowser", "Joshua", "Bowser",3, 2))
-    # print(get_ranked_fighters())
-    print(get_games())
+def reverte_last_game():
+    last_game_dict = get_last_game()
+    if last_game_dict is None:
+        raise ValueError("No Game to delete!")
+    last_game = Games(*last_game_dict)
+    winner_player = _get_player_data(get_data_of_player(last_game.winner))
+    loser_player = _get_player_data(get_data_of_player(last_game.loser))
+    winner_fighter = _get_fighter_data(get_data_of_player_fighter(last_game.winner, last_game.winner_fighter))
+    loser_fighter = _get_fighter_data(get_data_of_player_fighter(last_game.loser, last_game.loser_fighter))
+    new_loser_elo, new_winner_elo = calculate_elo.reverse_elo(loser_player.elo, winner_player.elo)
+    new_loser_fighter_elo, new_winner_fighter_elo = calculate_elo.reverse_elo(loser_fighter.elo, winner_fighter.elo)
+    if not _no_arguments_are_none(new_loser_fighter_elo, new_winner_fighter_elo, new_winner_elo, new_loser_elo):
+        raise ValueError("could not find correct Elos!")
+    delete_last_game()
+    update_elo_of_player(winner_player.name, new_winner_elo)
+    update_elo_of_player(loser_player.name, new_loser_fighter_elo)
+    update_elo_of_player_fighter(winner_fighter.name, winner_player.name, new_winner_fighter_elo)
+    update_elo_of_player_fighter(loser_fighter.name, loser_player.name, new_loser_fighter_elo)
+
